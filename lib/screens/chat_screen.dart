@@ -73,6 +73,48 @@ List <String> message = [
           ],
         );
       },),
+      bottomSheet: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Container(
+          padding: EdgeInsets.symmetric(horizontal: 16.0,
+            vertical: 8.0
+          ),
+          decoration: BoxDecoration(
+            color: Colors.grey.shade300,
+            borderRadius: BorderRadius.circular(30.0)
+          ),
+
+          child: Row(
+            children: [
+              Expanded(
+                  child: TextField(
+                    decoration: InputDecoration(
+                      focusedBorder: InputBorder.none,
+                      hintText: "Message",
+                      hintStyle: TextStyle(
+                        color: Colors.grey,
+                        fontSize: 20
+                      )
+                    ),
+                  )),
+              IconButton(
+                padding: EdgeInsets.all(12.0),
+                onPressed: () {},
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.resolveWith<Color>((states) {
+                    if (states.contains(MaterialState.pressed)) {
+                      return Colors.red;
+                    }
+                    return kDarkBlue2; // اللون الافتراضي
+                  }),
+                ),
+                color: Colors.white,
+                icon: Icon(Icons.send),
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }
