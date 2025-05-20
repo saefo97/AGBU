@@ -25,6 +25,7 @@ class SignUpPage extends StatelessWidget {
                 children: [
                   Row(
                     children: [
+
                       Hero(
                         tag: "logo",
                         child: Image.asset('assets/images/logo.png',
