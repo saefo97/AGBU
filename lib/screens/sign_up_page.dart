@@ -1,19 +1,31 @@
+import 'package:agbu/components/loading_screen.dart';
 import 'package:agbu/constants.dart';
+import 'package:agbu/screens/chat_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '../components/background_decoration.dart';
 import '../components/custom_text_field.dart';
 import '../components/custon_button.dart';
 
-class SignUpPage extends StatelessWidget {
-  TextEditingController emailController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
-  TextEditingController confirmPasswordController = TextEditingController();
+class SignUpPage extends StatefulWidget {
 
   SignUpPage({super.key});
 
   @override
+  State<SignUpPage> createState() => _SignUpPageState();
+}
+
+class _SignUpPageState extends State<SignUpPage> {
+  TextEditingController emailController = TextEditingController();
+
+  TextEditingController passwordController = TextEditingController();
+
+  TextEditingController confirmPasswordController = TextEditingController();
+  //TODO: make the Form
+  @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    bool  isLoading = false;
+    return isLoading ? LoadingScreen() : Scaffold(
       body: Stack(
         children: [
           BackGroundDecoration(),
@@ -56,16 +68,27 @@ class SignUpPage extends StatelessWidget {
                     title: 'Confirm Password',
                   controller:
                     confirmPasswordController,),
-                  
 
-                  
+
+
                   SizedBox(height: 16.0,),
                   Hero(
                     tag: "Sign Up",
                     child: SizedBox(
                         width: MediaQuery.of(context).size.width,
                       child: CustomButton(
-                        onPressed: (){},
+                        onPressed: (){
+                          setState(() {
+                            isLoading = true;
+                          });
+                          FirebaseAuth.instance.createUserWithEmailAndPassword(
+                              email: emailController.text.trim(),
+                              password: passwordController.text.trim());
+                          setState(() {
+                            isLoading = false;
+                          });
+                          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>ChatScreen()));
+                        },
                         title: "Sign Up",
                       ),
                     ),

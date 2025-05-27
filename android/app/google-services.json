@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "997019446393",
+    "project_id": "agbu-88718",
+    "storage_bucket": "agbu-88718.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:997019446393:android:406680dffcc2d5b11cb8a8",
+        "android_client_info": {
+          "package_name": "com.example.agbu"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAXZwbON_Wpr7Hk0R_puIcVcRL1RRd0nGw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
