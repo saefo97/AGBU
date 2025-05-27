@@ -6,9 +6,12 @@ class CustomTextFormFormField extends StatefulWidget {
   final String title;
   TextEditingController? controller;
   bool? isPassword;
+  String? Function(String?)? validator;
   CustomTextFormFormField({
     super.key, required this.title, this.isPassword = false,
+    this.validator,
     this.controller
+
   });
 
   @override
@@ -21,6 +24,7 @@ class _CustomTextFormFormFieldState extends State<CustomTextFormFormField> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      validator: widget. validator,
       controller: widget.controller,
       maxLines: 1,
       minLines: 1,
@@ -62,6 +66,23 @@ class _CustomTextFormFormFieldState extends State<CustomTextFormFormField> {
                 width: 3
             )
         ),
+
+
+        errorBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(6.0),
+            borderSide: BorderSide(
+                color: Colors.red,
+                width: 2
+            )
+        ),
+        focusedErrorBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12.0),
+            borderSide: BorderSide(
+                color: Colors.red,
+                width: 3
+            )
+        ),
+
         //     icon: Icon(Icons.email)  ,
         label: Text("${widget.title}",
         ),
