@@ -1,6 +1,7 @@
 import 'package:agbu/constants.dart';
 import 'package:agbu/screens/chat_screen.dart';
 import 'package:agbu/screens/forget_password_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '../components/background_decoration.dart';
 import '../components/custom_text_field.dart';
@@ -8,11 +9,25 @@ import '../components/custon_button.dart';
 
 
 class LogInPage extends StatelessWidget {
+
+
+  signIn(BuildContext context){
+
+
+    FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: emailController.text.trim(),
+        password: passwordController.text.trim());
+    Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=>ChatScreen()), (route) => false,);
+  }
+// Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>ChatScreen()));
+
+
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
   LogInPage({super.key});
   //TODO: make the Form
+
 
   @override
   Widget build(BuildContext context) {
@@ -73,7 +88,7 @@ class LogInPage extends StatelessWidget {
                     child: SizedBox(
                       width: MediaQuery.of(context).size.width,
                       child: CustomButton(onPressed: () {
-   Navigator.push(context, MaterialPageRoute(builder: (context)=>ChatScreen()))  ;                   
+                        signIn(context);
                       }, title: "Sign In"),
                     ),
                   ),
