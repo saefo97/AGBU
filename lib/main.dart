@@ -38,6 +38,7 @@ class _MyAppState extends State<MyApp> {
     if (_isFirstRun == false) {
       prefs.setBool('firstTime', true);
     }
+
     print(_isFirstRun);
     return prefs.getBool('firstTime');
   }
