@@ -2,8 +2,10 @@ import 'package:agbu/constants.dart';
 import 'package:agbu/screens/chat_screen.dart';
 import 'package:agbu/screens/forget_password_screen.dart';
 import 'package:agbu/screens/personal_information.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../auth_services.dart';
 import '../components/background_decoration.dart';
 import '../components/custom_text_field.dart';
@@ -37,20 +39,40 @@ class _LogInPageState extends State<LogInPage> {
         emailController.text.trim(),
         passwordController.text.trim(),
       );
-      setState(() {
-        isLoading = false;
-      });
+
       if (errorMessage == null) {
-        Navigator.pushAndRemoveUntil(
-          context,
-          MaterialPageRoute(
-            builder:
-                (context) =>
-                    PersonalInformation(email: emailController.text.trim()),
-          ),
-          (route) => false,
-        );
+        final uid = FirebaseAuth.instance.currentUser?.uid;
+        final doc =
+            await FirebaseFirestore.instance.collection('user').doc(uid).get();
+        if (!doc.exists || doc['userName'] == null) {
+          setState(() {
+            isLoading = false;
+          });
+          Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(
+              builder:
+                  (context) =>
+                      PersonalInformation(email: emailController.text.trim()),
+            ),
+            (route) => false,
+          );
+        } else if (doc.exists) {
+          final prefs = await SharedPreferences.getInstance();
+          prefs.setString("userName", (doc['userName']).toString());
+          setState(() {
+            isLoading = false;
+          });
+          Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(builder: (context) => ChatScreen()),
+            (route) => false,
+          );
+        }
       } else {
+        setState(() {
+          isLoading = false;
+        });
         showErrorMessage(errorMessage);
       }
     }

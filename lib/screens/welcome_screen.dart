@@ -1,6 +1,7 @@
 import 'package:agbu/constants.dart';
 import 'package:agbu/screens/sign_up_page.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../components/background_decoration.dart';
 import '../components/custon_button.dart';
 import 'log_in_screen.dart';
@@ -67,8 +68,14 @@ class WelcomeScreen extends StatelessWidget {
                       Hero(
                         tag: "Sign Up",
                         child: SizedBox(
-                          child: CustomButton(onPressed: (){
-                            Navigator.push(context, MaterialPageRoute(builder: (context)=>SignUpPage()));
+                          child: CustomButton(onPressed: () async {
+
+                            final prefs = await SharedPreferences.getInstance();
+                            prefs.remove('firstTime');
+                            print("***************************************************************");
+                            print("cache cleared");
+                            print("***************************************************************");
+                         //   Navigator.push(context, MaterialPageRoute(builder: (context)=>SignUpPage()));
 
                           }, title: "Sign Up"),
                         ),

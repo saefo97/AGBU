@@ -3,6 +3,7 @@ import 'package:agbu/screens/chat_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../components/background_decoration.dart';
 import '../components/custon_button.dart';
@@ -15,7 +16,7 @@ class PersonalInformation extends StatelessWidget {
 
   PersonalInformation({super.key, required this.email});
 
-  saveUserData(BuildContext context) {
+  saveUserData(BuildContext context) async {
     final user = FirebaseAuth.instance.currentUser;
     if (_globalKey.currentState!.validate()) {
       FirebaseFirestore.instance.collection('user').doc(user!.uid).set({
@@ -23,6 +24,9 @@ class PersonalInformation extends StatelessWidget {
         'userName': userNameController.text.trim(),
         'createdAt': Timestamp.now(),
       });
+
+      final prefs = await SharedPreferences.getInstance();
+      prefs.setString("userName", (userNameController.text.trim()).toString());
       Navigator.pushAndRemoveUntil(
         context,
         MaterialPageRoute(

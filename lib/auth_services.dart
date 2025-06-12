@@ -1,5 +1,6 @@
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthenticationServices{
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -70,6 +71,13 @@ class AuthenticationServices{
 
 
   Future<void> signOut() async {
-    await _auth.signOut();
+    await _auth.signOut().then((value) async {
+
+      final prefs = await SharedPreferences.getInstance();
+      prefs.remove('userName');
+      print("***************************************************************");
+      print("cache cleared");
+      print("***************************************************************");
+    },);
   }
 }
