@@ -7,6 +7,7 @@ import '../auth_services.dart';
 import '../components/background_decoration.dart';
 import '../components/custom_text_field.dart';
 import '../components/custon_button.dart';
+import 'log_in_screen.dart';
 
 class SignUpPage extends StatefulWidget {
   SignUpPage({super.key});
@@ -16,12 +17,6 @@ class SignUpPage extends StatefulWidget {
 }
 
 class _SignUpPageState extends State<SignUpPage> {
-  void _showErrorMessage(String message) {
-    ScaffoldMessenger.of(
-      context,
-    ).showSnackBar(SnackBar(content: Text(message)));
-  }
-
   final AuthenticationServices _authenticationServices =
       AuthenticationServices();
   TextEditingController emailController = TextEditingController();
@@ -30,6 +25,7 @@ class _SignUpPageState extends State<SignUpPage> {
   final _globalKey = GlobalKey<FormState>();
   TextEditingController confirmPasswordController = TextEditingController();
   bool isLoading = false;
+
   signUp() async {
     if (_globalKey.currentState!.validate()) {
       setState(() {
@@ -42,17 +38,24 @@ class _SignUpPageState extends State<SignUpPage> {
       setState(() {
         isLoading = false;
       });
-      if(errorMessage == null){        Navigator.pushAndRemoveUntil(
-        context,
-        MaterialPageRoute(builder: (context) => ChatScreen()),
-            (route) => false,
-      );
-      }else{
-        print(errorMessage);
+      if (errorMessage == "Please Check Your Email") {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => LogInPage(email: emailController.text.trim()),
+          ),
+        );
+        showErrorMessage(errorMessage!);
+      } else {
+        showErrorMessage(errorMessage!);
       }
-
     }
-    // Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>ChatScreen()));
+  }
+
+  void showErrorMessage(String errorMessage) {
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(SnackBar(content: Text(errorMessage)));
   }
 
   @override

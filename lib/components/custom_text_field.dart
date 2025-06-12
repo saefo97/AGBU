@@ -5,7 +5,7 @@ import 'package:neon_widgets/neon_widgets.dart';
 class CustomTextFormFormField extends StatefulWidget {
   final String title;
   TextEditingController? controller;
-  bool? isPassword;
+  final bool isPassword;
   String? Function(String?)? validator;
   CustomTextFormFormField({
     super.key, required this.title, this.isPassword = false,

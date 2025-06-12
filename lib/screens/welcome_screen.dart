@@ -59,7 +59,7 @@ class WelcomeScreen extends StatelessWidget {
                         tag: "Sign In",
                         child: SizedBox(
                           child: CustomButton(onPressed: (){
-                            Navigator.push(context, MaterialPageRoute(builder: (context)=>LogInPage()));
+                            Navigator.push(context, MaterialPageRoute(builder: (context)=>LogInPage(email: '',)));
                           }, title: "Sign In"),
                         ),
                       ),

@@ -9,7 +9,6 @@ import '../components/drawer.dart';
 import '../constants.dart';
 
 class ChatScreen extends StatefulWidget {
-
   ChatScreen({super.key});
 
   @override
@@ -17,43 +16,33 @@ class ChatScreen extends StatefulWidget {
 }
 
 class _ChatScreenState extends State<ChatScreen> {
-  final FirebaseFirestore _fireStore =  FirebaseFirestore.instance;
+  final FirebaseFirestore _fireStore = FirebaseFirestore.instance;
 
   TextEditingController messageController = TextEditingController();
 
   String? userEmail;
   getSenderEmail() async {
-    setState(()async {
-      userEmail = await
-      (FirebaseAuth.instance.currentUser?.email).toString();
+    setState(() async {
+      userEmail = await (FirebaseAuth.instance.currentUser?.email).toString();
     });
   }
+
   @override
   void initState() {
     getSenderEmail();
     super.initState();
   }
-  sendMessage(TextEditingController messageController, String userEmail){
-    _fireStore.collection('messages').doc().set({
-      "message": messageController.text.trim(),
-      "time": Timestamp.now(),
-      "senderEmail": userEmail,
-    });
-    messageController.clear();
-  }
+
+
 
   @override
   Widget build(BuildContext context) {
     getSenderEmail();
     return Scaffold(
       appBar: CustomAppBar(title: "AGBU"),
-      endDrawer:CustomDrawer(),
+      endDrawer: CustomDrawer(),
       body: StreamBuilder<QuerySnapshot>(
-        stream:
-        _fireStore
-                .collection('messages')
-                .orderBy('time')
-                .snapshots(),
+        stream: _fireStore.collection('messages').orderBy('time',descending: true).snapshots(),
         builder: (context, snapshot) {
           if (snapshot.connectionState != ConnectionState.active) {
             return LoadingScreen();
@@ -65,7 +54,15 @@ class _ChatScreenState extends State<ChatScreen> {
           var data = snapshot.data?.docs;
           print(data);
           return ListView.builder(
-            padding: EdgeInsets.all(16.0),
+            reverse: true,
+            padding: EdgeInsets.only(
+                bottom: 104.0,
+                top: 16.0,
+                left: 16.0,
+                right: 16.0
+
+
+           ),
             itemCount: data?.length,
             itemBuilder: (context, index) {
               return Column(
@@ -73,39 +70,61 @@ class _ChatScreenState extends State<ChatScreen> {
                 children: [
                   Align(
                     alignment:
-                    (userEmail == data?[index]['senderEmail'])
+                        (userEmail == data?[index]['senderEmail'])
                             ? Alignment.centerRight
                             : Alignment.centerLeft,
-                    child: Container(
-                      constraints: BoxConstraints(
-                        maxWidth: MediaQuery.of(context).size.width * 2 / 3,
-                      ),
-                      padding: EdgeInsets.symmetric(
-                        horizontal: 8.0,
-                        vertical: 4.0,
-                      ),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.only(
-                          bottomRight: Radius.circular(18.0),
-                          bottomLeft: Radius.circular(18.0),
-                          topRight:
-                          (userEmail == data?[index]['senderEmail'])
-                                  ? Radius.circular(0.0)
-                                  : Radius.circular(18.0),
-                          topLeft:
-                          (userEmail != data?[index]['senderEmail'])
-                                  ? Radius.circular(0.0)
-                                  : Radius.circular(18.0),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          data?[index]['userName'] ?? data?[index]['senderEmail'],
+                          style: TextStyle(
+                            color:
+                            (userEmail == data?[index]['senderEmail'])
+                                ? Colors.black
+                                : Colors.white,
+                            fontSize: 10.0,
+                          ),
                         ),
-                        color: (userEmail == data?[index]['senderEmail'])? kLightBlue1 : kDarkBlue1,
-                      ),
-                      child: Text(
-                        data?[index]['message'],
-                        style: TextStyle(
-                          color: (userEmail == data?[index]['senderEmail']) ? Colors.black : Colors.white,
-                          fontSize: 18.0,
+                        Container(
+
+                          constraints: BoxConstraints(
+                            maxWidth: MediaQuery.of(context).size.width * 2 / 3,
+                          ),
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 8.0,
+                            vertical: 4.0,
+                          ),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.only(
+                              bottomRight: Radius.circular(18.0),
+                              bottomLeft: Radius.circular(18.0),
+                              topRight:
+                                  (userEmail == data?[index]['senderEmail'])
+                                      ? Radius.circular(0.0)
+                                      : Radius.circular(18.0),
+                              topLeft:
+                                  (userEmail != data?[index]['senderEmail'])
+                                      ? Radius.circular(0.0)
+                                      : Radius.circular(18.0),
+                            ),
+                            color:
+                                (userEmail == data?[index]['senderEmail'])
+                                    ? kLightBlue1
+                                    : kDarkBlue1,
+                          ),
+                          child: Text(
+                            data?[index]['message'],
+                            style: TextStyle(
+                              color:
+                                  (userEmail == data?[index]['senderEmail'])
+                                      ? Colors.black
+                                      : Colors.white,
+                              fontSize: 20.0,
+                            ),
+                          ),
                         ),
-                      ),
+                      ],
                     ),
                   ),
                   SizedBox(height: 8.0),
@@ -139,10 +158,11 @@ class _ChatScreenState extends State<ChatScreen> {
               IconButton(
                 padding: EdgeInsets.all(12.0),
 
-                onPressed: (){
-                  sendMessage(
-                      messageController,userEmail!
-                  );
+                onPressed:  () async {
+                  if(messageController.text.isNotEmpty){
+                   await sendMessage(messageController, userEmail!);
+                    messageController.clear();
+                  }
                 },
                 style: ButtonStyle(
                   backgroundColor: MaterialStateProperty.resolveWith<Color>((

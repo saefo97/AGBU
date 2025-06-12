@@ -1,3 +1,4 @@
+import 'package:agbu/screens/welcome_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:neon_widgets/neon_widgets.dart';
 
@@ -16,9 +17,12 @@ class CustomDrawer extends StatelessWidget {
       child: ListView(
         children: [
           ListTile(
-            onTap: () {
-              _authenticationServices.signOut();
-
+            onTap: () async {
+              await _authenticationServices.signOut();
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => WelcomeScreen()),
+              );
             },
             title: NeonText(
               text: "Log Out",
