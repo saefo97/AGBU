@@ -6,6 +6,7 @@ import '../api/send_message.dart';
 import '../auth_services.dart';
 import '../components/custom_appbar.dart';
 import '../components/drawer.dart';
+import '../components/fade_animation.dart';
 import '../constants.dart';
 
 class ChatScreen extends StatefulWidget {
@@ -65,70 +66,74 @@ class _ChatScreenState extends State<ChatScreen> {
            ),
             itemCount: data?.length,
             itemBuilder: (context, index) {
-              return Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Align(
-                    alignment:
-                        (userEmail == data?[index]['senderEmail'])
-                            ? Alignment.centerRight
-                            : Alignment.centerLeft,
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text(
-                          data?[index]['userName'] ?? data?[index]['senderEmail'],
-                          style: TextStyle(
-                            color:
-                            (userEmail == data?[index]['senderEmail'])
-                                ? Colors.black
-                                : Colors.white,
-                            fontSize: 10.0,
-                          ),
-                        ),
-                        Container(
+              return      FadeAnimation(
 
-                          constraints: BoxConstraints(
-                            maxWidth: MediaQuery.of(context).size.width * 2 / 3,
-                          ),
-                          padding: EdgeInsets.symmetric(
-                            horizontal: 8.0,
-                            vertical: 4.0,
-                          ),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.only(
-                              bottomRight: Radius.circular(18.0),
-                              bottomLeft: Radius.circular(18.0),
-                              topRight:
-                                  (userEmail == data?[index]['senderEmail'])
-                                      ? Radius.circular(0.0)
-                                      : Radius.circular(18.0),
-                              topLeft:
-                                  (userEmail != data?[index]['senderEmail'])
-                                      ? Radius.circular(0.0)
-                                      : Radius.circular(18.0),
-                            ),
-                            color:
-                                (userEmail == data?[index]['senderEmail'])
-                                    ? kLightBlue1
-                                    : kDarkBlue1,
-                          ),
-                          child: Text(
-                            data?[index]['message'],
+                delay: 150* index,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Align(
+                      alignment:
+                          (userEmail == data?[index]['senderEmail'])
+                              ? Alignment.centerRight
+                              : Alignment.centerLeft,
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            data?[index]['userName'] ?? data?[index]['senderEmail'],
                             style: TextStyle(
                               color:
-                                  (userEmail == data?[index]['senderEmail'])
-                                      ? Colors.black
-                                      : Colors.white,
-                              fontSize: 20.0,
+                              (userEmail == data?[index]['senderEmail'])
+                                  ? Colors.black
+                                  : Colors.white,
+                              fontSize: 10.0,
                             ),
                           ),
-                        ),
-                      ],
+                          Container(
+
+                            constraints: BoxConstraints(
+                              maxWidth: MediaQuery.of(context).size.width * 2 / 3,
+                            ),
+                            padding: EdgeInsets.symmetric(
+                              horizontal: 8.0,
+                              vertical: 4.0,
+                            ),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.only(
+                                bottomRight: Radius.circular(18.0),
+                                bottomLeft: Radius.circular(18.0),
+                                topRight:
+                                    (userEmail == data?[index]['senderEmail'])
+                                        ? Radius.circular(0.0)
+                                        : Radius.circular(18.0),
+                                topLeft:
+                                    (userEmail != data?[index]['senderEmail'])
+                                        ? Radius.circular(0.0)
+                                        : Radius.circular(18.0),
+                              ),
+                              color:
+                                  (userEmail == data?[index]['senderEmail'])
+                                      ? kLightBlue1
+                                      : kDarkBlue1,
+                            ),
+                            child: Text(
+                              data?[index]['message'],
+                              style: TextStyle(
+                                color:
+                                    (userEmail == data?[index]['senderEmail'])
+                                        ? Colors.black
+                                        : Colors.white,
+                                fontSize: 20.0,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                  SizedBox(height: 8.0),
-                ],
+                    SizedBox(height: 8.0),
+                  ],
+                ),
               );
             },
           );

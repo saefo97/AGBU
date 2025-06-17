@@ -1,3 +1,4 @@
+import 'package:agbu/components/fade_animation.dart';
 import 'package:agbu/constants.dart';
 import 'package:agbu/screens/chat_screen.dart';
 import 'package:agbu/screens/forget_password_screen.dart';
@@ -116,41 +117,51 @@ class _LogInPageState extends State<LogInPage> {
                               ),
                             ),
                             SizedBox(width: 32.0),
-                            Text("Sign In", style: kMainTitleTextStyle),
+                            FadeAnimation(
+
+                                delay: 250,
+                                child: Text("Sign In", style: kMainTitleTextStyle)),
                           ],
                         ),
 
                         SizedBox(height: 16.0),
-                        CustomTextFormFormField(
-                          title: 'Email',
-                          validator: (val) {
-                            if (val!.isEmpty || val! == null) {
-                              return "Please Enter your Email";
-                            }
-                            return null;
-                          },
-                          controller: emailController,
+                        FadeAnimation(
+
+                          delay: 500,                          child: CustomTextFormFormField(
+                            title: 'Email',
+                            validator: (val) {
+                              if (val!.isEmpty || val! == null) {
+                                return "Please Enter your Email";
+                              }
+                              return null;
+                            },
+                            controller: emailController,
+                          ),
                         ),
                         SizedBox(height: 8.0),
 
-                        CustomTextFormFormField(
-                          validator: (val) {
-                            if (val!.isEmpty || val! == null) {
-                              return "Please Enter your Password";
-                            } else if ((passwordController.text.trim()).length <
-                                6) {
-                              return "Weak Password";
-                            }
-                            return null;
-                          },
-                          isPassword: true,
-                          title: 'Password',
-                          controller: passwordController,
+                        FadeAnimation(
+
+                          delay: 750,                          child: CustomTextFormFormField(
+                            validator: (val) {
+                              if (val!.isEmpty || val! == null) {
+                                return "Please Enter your Password";
+                              } else if ((passwordController.text.trim()).length <
+                                  6) {
+                                return "Weak Password";
+                              }
+                              return null;
+                            },
+                            isPassword: true,
+                            title: 'Password',
+                            controller: passwordController,
+                          ),
                         ),
 
                         SizedBox(height: 16.0),
-                        Hero(
-                          tag: "Sign In",
+                        FadeAnimation(
+
+                          delay: 1000,
                           child: SizedBox(
                             width: MediaQuery.of(context).size.width,
                             child: CustomButton(
