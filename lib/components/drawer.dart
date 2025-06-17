@@ -1,21 +1,47 @@
 import 'package:agbu/screens/welcome_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:neon_widgets/neon_widgets.dart';
+import 'package:provider/provider.dart';
 
 import '../auth_services.dart';
 import '../constants.dart';
+import '../provider/theme_provider.dart';
 
-class CustomDrawer extends StatelessWidget {
-  final AuthenticationServices _authenticationServices = AuthenticationServices();
+class CustomDrawer extends StatefulWidget {
 
   CustomDrawer({super.key});
 
   @override
+  State<CustomDrawer> createState() => _CustomDrawerState();
+}
+
+class _CustomDrawerState extends State<CustomDrawer> {
+  final AuthenticationServices _authenticationServices = AuthenticationServices();
+  @override
   Widget build(BuildContext context) {
+    final themeProvider = Provider.of<ThemeProvider>(context);
+
     return  Drawer(
-      width: 200,
       child: ListView(
         children: [
+          CheckboxListTile(value: themeProvider.isDarkMode, onChanged:
+              (val){
+            themeProvider.toggleTheme();
+          },
+            title:  Text(
+              themeProvider.isDarkMode?   "Light Mode" :  "Dark Mode" ,
+            ),
+          ),
+          SwitchListTile(value: themeProvider.isDarkMode,
+              onChanged: (value) {
+                themeProvider.toggleTheme();
+
+              },
+
+            title:  Text(
+              themeProvider.isDarkMode?   "Light Mode" :  "Dark Mode" ,
+            ),
+          ),
           ListTile(
             onTap: () async {
               await _authenticationServices.signOut();
@@ -24,15 +50,11 @@ class CustomDrawer extends StatelessWidget {
                 MaterialPageRoute(builder: (context) => WelcomeScreen()),
               );
             },
-            title: NeonText(
-              text: "Log Out",
-              spreadColor: kDarkBlue2,
-              blurRadius: 15,
-              textSize: 28.0,
-              textColor: Colors.blue.shade300,
+            title: Text(
+             "Log Out",
             ),
             trailing: Icon(Icons.exit_to_app),
-          ),
+          )
         ],
       ),
     );

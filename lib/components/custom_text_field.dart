@@ -52,36 +52,7 @@ class _CustomTextFormFormFieldState extends State<CustomTextFormFormField> {
         )
 
         ) : null,
-        enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(6.0),
-            borderSide: BorderSide(
-                color: Colors.blue.shade300,
-                width: 2
-            )
-        ),
-        focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12.0),
-            borderSide: BorderSide(
-                color: kDarkBlue1,
-                width: 3
-            )
-        ),
 
-
-        errorBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(6.0),
-            borderSide: BorderSide(
-                color: Colors.red,
-                width: 2
-            )
-        ),
-        focusedErrorBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12.0),
-            borderSide: BorderSide(
-                color: Colors.red,
-                width: 3
-            )
-        ),
 
         //     icon: Icon(Icons.email)  ,
         label: Text("${widget.title}",

@@ -1,3 +1,4 @@
+import 'package:agbu/provider/theme_provider.dart';
 import 'package:agbu/screens/chat_screen.dart';
 import 'package:agbu/screens/first_run_screens.dart';
 import 'package:agbu/screens/personal_information.dart';
@@ -6,14 +7,20 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 import 'components/loading_screen.dart';
+import 'components/theme_data.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  runApp(const MyApp());
+  runApp(
+    MultiProvider(
+      providers: [ChangeNotifierProvider(create: (_) => ThemeProvider())],
+      child: MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatefulWidget {
@@ -29,7 +36,7 @@ class _MyAppState extends State<MyApp> {
     return prefs.getString('userName');
   }
 
-  bool _isFirstRun=false;
+  bool _isFirstRun = false;
   Future<bool?> isFirstRun() async {
     final prefs = await SharedPreferences.getInstance();
     setState(() {
@@ -52,8 +59,12 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
+    final themeProvider = Provider.of<ThemeProvider>(context);
     return MaterialApp(
-      theme: ThemeData(fontFamily: 'times'),
+      theme:
+          themeProvider.isDarkMode
+              ? darkMode
+              : ThemeData(),
       debugShowCheckedModeBanner: false,
       home:
           !_isFirstRun

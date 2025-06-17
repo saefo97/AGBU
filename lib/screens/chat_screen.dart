@@ -70,6 +70,13 @@ class _ChatScreenState extends State<ChatScreen> {
 
                 delay: 150* index,
                 child: Column(
+
+                  mainAxisAlignment:
+                  (userEmail == data?[index]['senderEmail']) ?
+                  MainAxisAlignment.end:MainAxisAlignment.start
+
+
+                  ,
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Align(
@@ -78,6 +85,12 @@ class _ChatScreenState extends State<ChatScreen> {
                               ? Alignment.centerRight
                               : Alignment.centerLeft,
                       child: Column(
+                        crossAxisAlignment:
+                        (userEmail == data?[index]['senderEmail']) ?
+                        CrossAxisAlignment.end:CrossAxisAlignment.start
+
+
+                        ,
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           Text(
@@ -85,8 +98,8 @@ class _ChatScreenState extends State<ChatScreen> {
                             style: TextStyle(
                               color:
                               (userEmail == data?[index]['senderEmail'])
-                                  ? Colors.black
-                                  : Colors.white,
+                                  ? kDarkBlue2
+                                  : Colors.blue,
                               fontSize: 10.0,
                             ),
                           ),
@@ -155,6 +168,7 @@ class _ChatScreenState extends State<ChatScreen> {
                   controller: messageController,
                   decoration: InputDecoration(
                     focusedBorder: InputBorder.none,
+                    enabledBorder: InputBorder.none,
                     hintText: "Message",
                     hintStyle: TextStyle(color: Colors.grey, fontSize: 20),
                   ),
